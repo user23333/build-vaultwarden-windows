@@ -30,11 +30,8 @@ jobs:
           curl -fsSL "$( curl -fsSL 'https://api.github.com/repos/dani-garcia/vaultwarden/releases/latest' | jq -Mrc '.tarball_url' )" |
           MSYS='winsymlinks:lnk' tar -xz --strip-components=1
           OPENSSL_DIR="$( cygpath -aw /ucrt64 )" RUSTFLAGS="--remap-path-prefix=${USERPROFILE}=~" cargo build --features sqlite --release
-      - name: Release
-        env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        run: |
-          bin='build/target/release/vaultwarden.exe'
-          ! gh release view result &>/dev/null &&
-          gh release create result "${bin}" -n 'download here' ||
-          gh release upload result "${bin}" --clobber
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: vaultwarden-release
+          path: build/target/release/vaultwarden.exe
