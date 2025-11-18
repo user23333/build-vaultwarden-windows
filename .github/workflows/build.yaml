@@ -31,7 +31,7 @@ jobs:
           MSYS='winsymlinks:lnk' tar -xz --strip-components=1
           OPENSSL_DIR="$( cygpath -aw /ucrt64 )" RUSTFLAGS="--remap-path-prefix=${USERPROFILE}=~" cargo build --features sqlite --release
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: vaultwarden-release
           path: build/target/release/vaultwarden.exe
